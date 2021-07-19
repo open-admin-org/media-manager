@@ -28,7 +28,6 @@
                     {{ $item['icon'] }} {{ basename($item['name']) }}
                     </a>
                 </td>
-                
 
                 <td class="action-row">
                     <div class="btn-group btn-group-sm hide">
