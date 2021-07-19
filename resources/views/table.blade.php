@@ -31,12 +31,12 @@
 
                 <td class="action-row">
                     <div class="btn-group btn-group-sm hide">
-                        <a class="btn btn-light file-rename" data-toggle="modal" data-target="#moveModal" data-name="{{ $item['name'] }}"><i class="icon-edit"></i></a>
+                        <a class="btn btn-light file-rename" data-bs-toggle="modal" data-bs-target="#moveModal" data-name="{{ $item['name'] }}"><i class="icon-edit"></i></a>
                         <a class="btn btn-light file-delete" data-path="{{ $item['name'] }}"><i class="icon-trash"></i></a>
                         @unless($item['isDir'])
                         <a target="_blank" href="{{ $item['download'] }}" class="btn btn-light"><i class="icon-download"></i></a>
                         @endunless
-                        <a class="btn btn-light" data-toggle="modal" data-target="#urlModal" data-url="{{ $item['url'] }}"><i class="icon-link"></i></a>
+                        <a class="btn btn-light" data-bs-toggle="modal" data-bs-target="#urlModal" data-url="{{ $item['url'] }}"><i class="icon-link"></i></a>
                     </div>
 
                 </td>

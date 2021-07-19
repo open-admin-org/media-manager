@@ -23,6 +23,13 @@
         float: left;
     }
 
+    .table .action-row .hide{
+        display:none;
+    }
+    .table tr:hover .action-row .hide{
+        display:block;
+    }
+
     .list .file-icon {
         text-align: center;
         font-size: 58px;
@@ -55,6 +62,7 @@
         float: left;
         margin: 7px 0px 0px 10px;
     }
+
     .list .file-name{
         width:100%;
         float: none;
