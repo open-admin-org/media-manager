@@ -2,12 +2,12 @@
 
 namespace OpenAdmin\Admin\Media;
 
-use OpenAdmin\Admin\Exception\Handler;
-use OpenAdmin\Admin\Extension;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Adapter\Local;
+use OpenAdmin\Admin\Exception\Handler;
+use OpenAdmin\Admin\Extension;
 
 /**
  * Class MediaManager.
