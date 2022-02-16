@@ -83,7 +83,7 @@
         max-height: 30px;
     }
 
-    .file-icon.has-img>img {        
+    .file-icon.has-img>img {
         height: auto;
         max-height: 75px;
         max-width: 90px;

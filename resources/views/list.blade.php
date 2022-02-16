@@ -21,6 +21,13 @@
                       {{ $item['size'] }}&nbsp;
                     </span>
 
+                    @if (!empty($select))
+                        @if ($item['isDir'])
+                            <span class="btn">&nbsp;</span>
+                        @else
+                            <a href="javascript:{{$fn}}('{{ $item['url'] }}','{{ $item['name'] }}');@if ($close) window.close();@endif" class="btn btn-primary">{{ trans('admin.select') }}</a>
+                        @endif
+                    @else
                     <div class="btn-group btn-group-sm float-end">
                         <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-bs-toggle="dropdown">
                             <span class="caret"></span>
@@ -36,6 +43,7 @@
                             <li><a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#urlModal" data-url="{{ $item['url'] }}">Url</a></li>
                         </ul>
                     </div>
+                    @endif
 
                 </div>
             </li>

@@ -205,7 +205,7 @@ class MediaManager extends Extension
                 'preview'   => str_replace('__path__', $dir, $preview),
                 'isDir'     => true,
                 'size'      => '',
-                'link'      => route('media-index', ['path' => '/'.trim($dir, '/'), 'view' => request('view')]),
+                'link'      => route('media-index', ['path' => '/'.trim($dir, '/'), 'view' => request('view'), 'select' => request('select'), 'fn' => $this->select_fn]),
                 'url'       => $this->storage->url($dir),
                 'time'      => $this->getFileChangeTime($dir),
             ];

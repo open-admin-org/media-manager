@@ -10,7 +10,11 @@
                     </span>
                 </th>
                 <th>{{ trans('admin.name') }}</th>
-                <th></th>
+                @if (!empty($select))
+                    <th>{{ trans('admin.select') }}</th>
+                @else
+                    <th></th>
+                @endif
                 <th width="200px;">{{ trans('admin.time') }}</th>
                 <th width="100px;">{{ trans('admin.size') }}</th>
             </tr>
@@ -25,10 +29,20 @@
                     {!! $item['preview'] !!}
 
                     <a @if(!$item['isDir'])target="_blank"@endif href="{{ $item['link'] }}" class="file-name" title="{{ $item['name'] }}">
-                    {{ $item['icon'] }} {{ basename($item['name']) }}
+                        {{ $item['icon'] }} {{ basename($item['name']) }}
                     </a>
+
                 </td>
 
+                @if (!empty($select))
+                    <td>
+                        @if ($item['isDir'])
+                            <span class="btn">&nbsp;</span>
+                        @else
+                            <a href="javascript:{{$fn}}('{{ $item['url'] }}','{{ $item['name'] }}');@if ($close) window.close();@endif" class="btn btn-primary">{{ trans('admin.select') }}</a>
+                        @endif
+                    </td>
+                @else
                 <td class="action-row">
                     <div class="btn-group btn-group-sm hide">
                         <a class="btn btn-light file-rename" data-bs-toggle="modal" data-bs-target="#moveModal" data-name="{{ $item['name'] }}"><i class="icon-edit"></i></a>
@@ -38,8 +52,9 @@
                         @endunless
                         <a class="btn btn-light" data-bs-toggle="modal" data-bs-target="#urlModal" data-url="{{ $item['url'] }}"><i class="icon-link"></i></a>
                     </div>
-
                 </td>
+                 @endif
+
                 <td>{{ $item['time'] }}&nbsp;</td>
                 <td>{{ $item['size'] }}&nbsp;</td>
             </tr>

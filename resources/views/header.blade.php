@@ -29,8 +29,8 @@
                 </a>
 
                 <div class="btn-group me-2">
-                    <a href="{{ route('media-index', ['path' => $url['path'], 'view' => 'table']) }}" class="btn @if($view == "table")btn-primary @else btn-light @endif"><i class="icon-list"></i></a>
-                    <a href="{{ route('media-index', ['path' => $url['path'], 'view' => 'list']) }}" class="btn @if($view == "list")btn-primary @else btn-light @endif"><i class="icon-th"></i></a>
+                    <a href="{{ route('media-index', ['path' => $url['path'], 'view' => 'table', 'select' => $select, 'fn' => $fn]) }}" class="btn @if($view == "table")btn-primary @else btn-light @endif"><i class="icon-list"></i></a>
+                    <a href="{{ route('media-index', ['path' => $url['path'], 'view' => 'list', 'select' => $select, 'fn' => $fn]) }}" class="btn @if($view == "list")btn-primary @else btn-light @endif"><i class="icon-th"></i></a>
                 </div>
 
                 {{--<form action="{{ $url['index'] }}" method="get" pjax-container>--}}
@@ -50,10 +50,10 @@
                 <nav class="breadcrumb-nav">
                     <ol class="breadcrumb" style="margin: -10px 0 6px 10px;">
 
-                        <li class="breadcrumb-item"><a href="{{ route('media-index') }}"><i class="icon-th-large"></i> </a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('media-index') }}?select={{$select}}&fn={{$fn}}"><i class="icon-th-large"></i> </a></li>
 
                         @foreach($nav as $item)
-                            <li class="breadcrumb-item"><a href="{{ $item['url'] }}&view={{$view}}"> {{ $item['name'] }}</a></li>
+                            <li class="breadcrumb-item"><a href="{{ $item['url'] }}&view={{$view}}&select={{$select}}&fn={{$fn}}"> {{ $item['name'] }}</a></li>
                         @endforeach
                     </ol>
                 </nav>
