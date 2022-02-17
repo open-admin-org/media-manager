@@ -6,6 +6,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Adapter\Local;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use OpenAdmin\Admin\Exception\Handler;
 use OpenAdmin\Admin\Extension;
 
@@ -49,8 +50,22 @@ class MediaManager extends Extension
     public function __construct($path = '/')
     {
         $this->path = $path;
+        $this->v = 8;
 
         $this->initStorage();
+    }
+
+    private function getAdapter()
+    {
+        if (!empty($this->storage->getAdapter())) {
+            // laravel 9
+            $this->v = 9;
+            return $this->storage->getAdapter();
+        } else {
+            // laravel <= 8
+            $this->v = 8;
+            return $this->storage->getDriver()->getAdapter();
+        }
     }
 
     private function initStorage()
@@ -59,7 +74,9 @@ class MediaManager extends Extension
 
         $this->storage = Storage::disk($disk);
 
-        if (!$this->storage->getDriver()->getAdapter() instanceof Local) {
+        $this->adapter = $this->getAdapter();
+
+        if (!$this->adapter instanceof LocalFilesystemAdapter && !$this->adapter instanceof Local) {
             Handler::error('Error', '[open-admin-ext/media-manager] only works for local storage.');
         }
     }
@@ -92,7 +109,11 @@ class MediaManager extends Extension
      */
     protected function getFullPath($path)
     {
-        return $this->storage->getDriver()->getAdapter()->applyPathPrefix($path);
+        if ($this->v == 9) {
+            return $this->storage->path($path);
+        } else {
+            return $this->storage->getDriver()->getAdapter()->applyPathPrefix($path);
+        }
     }
 
     public function download()
