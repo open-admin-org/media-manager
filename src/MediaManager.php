@@ -60,10 +60,12 @@ class MediaManager extends Extension
         if (!empty($this->storage->getAdapter())) {
             // laravel 9
             $this->v = 9;
+
             return $this->storage->getAdapter();
         } else {
             // laravel <= 8
             $this->v = 8;
+
             return $this->storage->getDriver()->getAdapter();
         }
     }

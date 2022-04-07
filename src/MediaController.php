@@ -29,7 +29,7 @@ class MediaController extends Controller
                 'url'       => $manager->urls(),
                 'close'     => $close,
                 'select'    => $select,
-                'fn' => $fn,
+                'fn'        => $fn,
             ]));
 
             if ($select) {
