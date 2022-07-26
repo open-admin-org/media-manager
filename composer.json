@@ -1,5 +1,5 @@
 {
-    "name": "lailen-open-admin-ext/media-manager",
+    "name": "lailen/open-admin-ext-media-manager",
     "description": "Media manager for open-admin",
     "type": "library",
     "keywords": ["open-admin", "media", "manager"],
