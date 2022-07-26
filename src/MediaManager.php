@@ -264,7 +264,7 @@ class MediaManager extends Extension
         switch ($this->detectFileType($file)) {
             case 'image':
 
-                if ($this->storage->getDriver()->getConfig()->has('url')) {
+                if (method_exists($this->storage->getDriver(), 'getConfig') && $this->storage->getDriver()->getConfig()->has('url')) {
                     $url = $this->storage->url($file);
                     $preview = "<span class=\"file-icon has-img\"><img src=\"$url\" alt=\"Attachment\"></span>";
                 } else {
