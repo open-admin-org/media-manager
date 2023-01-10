@@ -17,6 +17,8 @@ class MediaManager extends Extension
 {
     use BootExtension;
 
+    protected $v;
+
     /**
      * @var string
      */
@@ -26,6 +28,21 @@ class MediaManager extends Extension
      * @var \Illuminate\Filesystem\FilesystemAdapter
      */
     protected $storage;
+
+    /**
+     * @var
+     */
+    protected $adapter;
+
+    /**
+     * @var Boolean
+     */
+    protected $disk_has_url = false;
+
+    /**
+     * @var Url
+     */
+    protected $disk_url = "";
 
     /**
      * @var array
@@ -50,7 +67,7 @@ class MediaManager extends Extension
     public function __construct($path = '/')
     {
         $this->path = $path;
-        $this->v = 8;
+        $this->v    = 8;
 
         $this->initStorage();
     }
@@ -73,9 +90,14 @@ class MediaManager extends Extension
     private function initStorage()
     {
         $disk = static::config('disk');
+        $config = config("filesystems.disks.".$disk);
+
+        if (!empty($config['url'])){
+            $this->disk_has_url = true;
+            $this->disk_url = $config['url'];
+        }
 
         $this->storage = Storage::disk($disk);
-
         $this->adapter = $this->getAdapter();
 
         if (!$this->adapter instanceof LocalFilesystemAdapter && !$this->adapter instanceof Local) {
@@ -199,15 +221,15 @@ class MediaManager extends Extension
     {
         $files = array_map(function ($file) {
             return [
-                'download'  => route('media-download', compact('file')),
-                'icon'      => '',
-                'name'      => $file,
-                'preview'   => $this->getFilePreview($file),
-                'isDir'     => false,
-                'size'      => $this->getFilesize($file),
-                'link'      => route('media-download', compact('file')),
-                'url'       => $this->storage->url($file),
-                'time'      => $this->getFileChangeTime($file),
+                'download' => route('media-download', compact('file')),
+                'icon'     => '',
+                'name'     => $file,
+                'preview'  => $this->getFilePreview($file),
+                'isDir'    => false,
+                'size'     => $this->getFilesize($file),
+                'link'     => route('media-download', compact('file')),
+                'url'      => $this->storage->url($file),
+                'time'     => $this->getFileChangeTime($file),
             ];
         }, $files);
 
@@ -222,15 +244,15 @@ class MediaManager extends Extension
 
         $dirs = array_map(function ($dir) use ($preview) {
             return [
-                'download'  => '',
-                'icon'      => '',
-                'name'      => $dir,
-                'preview'   => str_replace('__path__', $dir, $preview),
-                'isDir'     => true,
-                'size'      => '',
-                'link'      => route('media-index', ['path' => '/'.trim($dir, '/'), 'view' => request('view'), 'select' => request('select'), 'fn' => $this->select_fn]),
-                'url'       => $this->storage->url($dir),
-                'time'      => $this->getFileChangeTime($dir),
+                'download' => '',
+                'icon'     => '',
+                'name'     => $dir,
+                'preview'  => str_replace('__path__', $dir, $preview),
+                'isDir'    => true,
+                'size'     => '',
+                'link'     => route('media-index', ['path' => '/'.trim($dir, '/'), 'view' => request('view'), 'select' => request('select'), 'fn' => $this->select_fn]),
+                'url'      => $this->storage->url($dir),
+                'time'     => $this->getFileChangeTime($dir),
             ];
         }, $dirs);
 
@@ -251,8 +273,8 @@ class MediaManager extends Extension
             $path = rtrim($path, '/').'/'.$folder;
 
             $navigation[] = [
-                'name'  => $folder,
-                'url'   => route('media-index', ['path' => $path]),
+                'name' => $folder,
+                'url'  => route('media-index', ['path' => $path]),
             ];
         }
 
@@ -264,8 +286,8 @@ class MediaManager extends Extension
         switch ($this->detectFileType($file)) {
             case 'image':
 
-                if ($this->storage->getDriver()->getConfig()->has('url')) {
-                    $url = $this->storage->url($file);
+                if ($this->disk_has_url) {
+                    $url     = $this->storage->url($file);
                     $preview = "<span class=\"file-icon has-img\"><img src=\"$url\" alt=\"Attachment\"></span>";
                 } else {
                     $preview = '<span class="file-icon"><i class="icon-file-image"></i></span>';
