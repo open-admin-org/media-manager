@@ -67,7 +67,7 @@ class MediaManager extends Extension
     public function __construct($path = '/')
     {
         $this->path = $path;
-        $this->v = 8;
+        $this->v    = 8;
 
         $this->initStorage();
     }
@@ -89,12 +89,12 @@ class MediaManager extends Extension
 
     private function initStorage()
     {
-        $disk = static::config('disk');
+        $disk   = static::config('disk');
         $config = config('filesystems.disks.'.$disk);
 
         if (!empty($config['url'])) {
             $this->disk_has_url = true;
-            $this->disk_url = $config['url'];
+            $this->disk_url     = $config['url'];
         }
 
         $this->storage = Storage::disk($disk);
@@ -285,9 +285,8 @@ class MediaManager extends Extension
     {
         switch ($this->detectFileType($file)) {
             case 'image':
-
                 if ($this->disk_has_url) {
-                    $url = $this->storage->url($file);
+                    $url     = $this->storage->url($file);
                     $preview = "<span class=\"file-icon has-img\"><img src=\"$url\" alt=\"Attachment\"></span>";
                 } else {
                     $preview = '<span class="file-icon"><i class="icon-file-image"></i></span>';
